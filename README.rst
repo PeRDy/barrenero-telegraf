@@ -34,7 +34,7 @@ Quick start
     
     .. code:: console
 
-        sudo ./make install <influxdb_url> <influxdb_database> <influxdb_username> <influxdb_password>
+        sudo ./make install -u <influxdb_username> -p <influxdb_password> <influxdb_url> <influxdb_database>
 
 2. Move to installation folder:
 
