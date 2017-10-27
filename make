@@ -112,11 +112,10 @@ def run(*args, **kwargs):
     try:
         docker_cli.containers.run(
             image='barrenero-telegraf:latest',
-            command=shlex.split('-q --skip-check run') + list(args),
             detach=not kwargs['interactive'],
             name=kwargs['name'],
             network=kwargs['network'],
-            auto_remove=True,
+            restart_policy={'Name': 'always'},
             volumes=_volumes(kwargs['code']),
         )
     except KeyboardInterrupt:

@@ -43,10 +43,10 @@ def storj_status(api_url, token):
                 'restarts': node['restarts'],
                 'peers': node['peers'],
                 'offers': node['offers'],
-                'data_received': node['dataReceivedCount'] if node['dataReceivedCount'] is not None else -1,
+                'data_received': node['data_received'] if node['data_received'] is not None else -1,
                 'delta': abs(node['delta']) if node['delta'] is not None else -1,
                 'shared': shared,
-                'shared_percent': node['sharedPercent'] if node['sharedPercent'] is not None else -1,
+                'shared_percent': node['shared_percent'] if node['shared_percent'] is not None else -1,
             }
     except (JSONDecodeError, requests.HTTPError):
         pass
@@ -55,13 +55,13 @@ def storj_status(api_url, token):
 def main():
     config = ConfigParser()
     config.read('setup.cfg')
-    api_url = config.get('api', 'url')
+    api_url = config.get('api', 'url') + '/api/v1'
     token = config.get('api', 'token')
 
     for status in storj_status(api_url, token):
-        print(OUTPUT.format(os.environ['NODE_NAME'], status['id'], status['offers'], status['peers'],
-                            status['restarts'], status['shared'], status['shared_percent'], status['data_received'],
-                            status['delta'], status['status'], status['uptime']))
+        print(OUTPUT.format('barrenero', status['id'], status['offers'], status['peers'], status['restarts'],
+                            status['shared'], status['shared_percent'], status['data_received'], status['delta'],
+                            status['status'], status['uptime']))
 
 
 if __name__ == '__main__':
