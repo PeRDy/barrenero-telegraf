@@ -10,4 +10,5 @@ WantedBy=multi-user.target
 WorkingDirectory={{ app.path }}
 ExecStart=/usr/bin/python3.6 make run
 ExecStop=/usr/bin/docker stop -t 2 {{ app.name }}
+ExecStopPost=/usr/bin/docker rm {{ app.name }}
 RemainAfterExit=true
