@@ -8,7 +8,8 @@ from json import JSONDecodeError
 import requests
 
 OUTPUT = 'storj,host={},id={} ' \
-         'allocs={},peers={},restarts={},shared={},shared_percent={},contracts={},delta={},status="{}",uptime="{}"'
+         'allocs={},peers={},restarts={},shared={},shared_percent={},contracts={},delta={},status="{}",uptime="{}",' \
+         'response_time={},reputation={},version="{}"'
 
 SIZE = {
     'MB': 1,
@@ -47,6 +48,9 @@ def storj_status(api_url, token):
                 'delta': abs(node['delta']) if node['delta'] is not None else -1,
                 'shared': shared,
                 'shared_percent': node['shared_percent'] if node['shared_percent'] is not None else -1,
+                'response_time': node['response_time'] if node['response_time'] is not None else -1,
+                'reputation': node['reputation'] if node['reputation'] is not None else -1,
+                'version': node['version'] if node['version'] is not None else 'None',
             }
     except (JSONDecodeError, requests.HTTPError):
         pass
@@ -61,7 +65,8 @@ def main():
     for status in storj_status(api_url, token):
         print(OUTPUT.format('barrenero', status['id'], status['allocs'], status['peers'], status['restarts'],
                             status['shared'], status['shared_percent'], status['data_received'], status['delta'],
-                            status['status'], status['uptime']))
+                            status['status'], status['uptime'], status['response_time'], status['reputation'],
+                            status['version']))
 
 
 if __name__ == '__main__':
