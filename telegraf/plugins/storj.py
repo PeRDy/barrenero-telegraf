@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-import json
-import os
 import sys
 from configparser import ConfigParser
 from json import JSONDecodeError
 
 import requests
 
-OUTPUT = 'storj,host={},id={} ' \
+OUTPUT = '{},host={},id={} ' \
          'allocs={},peers={},restarts={},shared={},shared_percent={},contracts={},delta={},status="{}",uptime="{}",' \
          'response_time={},reputation={},version="{}"'
 
@@ -23,7 +21,7 @@ API_RESOURCE = 'storj'
 
 
 def storj_status(api_url, token):
-    url = '{}/{}'.format(api_url, API_RESOURCE)
+    url = '{}/{}/'.format(api_url, API_RESOURCE)
     response = requests.get(url, headers={'Authorization': 'Token {}'.format(token)})
     try:
         response.raise_for_status()
@@ -61,9 +59,10 @@ def main():
     config.read('setup.cfg')
     api_url = config.get('api', 'url') + '/api/v1'
     token = config.get('api', 'token')
+    database = config.get('influxdb', 'database')
 
     for status in storj_status(api_url, token):
-        print(OUTPUT.format('barrenero', status['id'], status['allocs'], status['peers'], status['restarts'],
+        print(OUTPUT.format(database, 'barrenero', status['id'], status['allocs'], status['peers'], status['restarts'],
                             status['shared'], status['shared_percent'], status['data_received'], status['delta'],
                             status['status'], status['uptime'], status['response_time'], status['reputation'],
                             status['version']))

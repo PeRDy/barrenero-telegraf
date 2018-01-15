@@ -13,11 +13,4 @@ WORKDIR /srv/apps/$APP
 COPY requirements.txt /srv/apps/$APP/
 RUN pip3 install -r requirements.txt
 
-# Copy Telegraf config
-COPY telegraf/telegraf.conf /etc/telegraf/telegraf.conf
-COPY telegraf/plugins/ /etc/telegraf/plugins/
-
-# Copy run_storj.py script
-COPY . /srv/apps/$APP/
-
 ENTRYPOINT ["telegraf"]
