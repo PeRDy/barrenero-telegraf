@@ -1,4 +1,5 @@
 FROM telegraf:alpine
+LABEL maintainer="José Antonio Perdiguero López <perdy.hh@gmail.com>"
 
 ENV APP=barrenero-telegraf
 
@@ -11,6 +12,7 @@ WORKDIR /srv/apps/$APP
 
 # Install python requirements
 COPY requirements.txt /srv/apps/$APP/
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt && \
+    rm -rf $HOME/.cache/pip/*
 
 ENTRYPOINT ["telegraf"]
