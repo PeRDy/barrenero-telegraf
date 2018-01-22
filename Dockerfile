@@ -11,8 +11,11 @@ RUN mkdir -p /srv/apps/$APP
 WORKDIR /srv/apps/$APP
 
 # Install python requirements
-COPY requirements.txt /srv/apps/$APP/
-RUN pip3 install -r requirements.txt && \
+COPY requirements.txt constraints.txt /srv/apps/$APP/
+RUN pip3 install --upgrade pip && \
+    pip3 install --no-cache-dir -r requirements.txt -c constraints.txt && \
     rm -rf $HOME/.cache/pip/*
+
+COPY telegraf /etc/telegraf/
 
 ENTRYPOINT ["telegraf"]
