@@ -56,7 +56,7 @@ def storj_status(api_url, token):
 
 def main():
     config = ConfigParser()
-    config.read('setup.cfg')
+    config.read('/etc/telegraf/setup.cfg')
     api_url = config.get('api', 'url') + '/api/v1'
     token = config.get('api', 'token')
     database = config.get('influxdb', 'database')
